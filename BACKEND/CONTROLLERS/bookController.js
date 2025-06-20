@@ -13,7 +13,7 @@ class BookController {
     async getBookById(req, res, next) {
         try {
             const { id } = req.params;
-            const book = bookService.getBookById(id);
+            const book = bookService.getBookById(parseInt(id));
             if (!book) {
                 return res.status(404).json({ message: 'Libro no encontrado' });
             }
