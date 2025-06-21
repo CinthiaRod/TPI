@@ -27,7 +27,7 @@ class UserModel {
     }
 
     findByUsername(username) {
-        // Hacer la búsqueda case insensitive como se menciona en los requisitos generales 
+        // Hacer la búsqueda case insensitive como se menciona en los requisitos generales
         return this.users.find(user => user.username.toLowerCase() === username.toLowerCase());
     }
 
