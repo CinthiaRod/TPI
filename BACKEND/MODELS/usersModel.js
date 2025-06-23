@@ -27,12 +27,11 @@ class UserModel {
     }
 
     findByUsername(username) {
-        // Hacer la búsqueda case insensitive como se menciona en los requisitos generales
         return this.users.find(user => user.username.toLowerCase() === username.toLowerCase());
     }
 
     create(newUser) {
-        newUser.id = Date.now().toString(); // ID simple
+        newUser.id = Date.now().toString(); 
         this.users.push(newUser);
         this.saveUsers();
         return newUser;

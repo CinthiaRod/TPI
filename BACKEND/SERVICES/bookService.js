@@ -1,27 +1,23 @@
 const bookModel = require('../models/bookModel');
 
 class BookService {
-    getAllBooks() {
+    async getAllBooks() {
         return bookModel.findAll();
     }
 
-    getBookById(id) {
+    async getBookById(id) {
         return bookModel.findById(id);
     }
 
-    addBook(bookData) {
-        // Aquí podrías añadir lógica de negocio adicional antes de crear el libro
-        // Por ejemplo, validar ISBN, verificar stock inicial, etc.
+    async addBook(bookData) {
         return bookModel.create(bookData);
     }
 
-    updateBook(id, bookData) {
-        // Lógica de negocio antes de actualizar
+    async updateBook(id, bookData) {
         return bookModel.update(id, bookData);
     }
 
-    deleteBook(id) {
-        // Lógica de negocio antes de eliminar
+    async deleteBook(id) {
         return bookModel.delete(id);
     }
 }

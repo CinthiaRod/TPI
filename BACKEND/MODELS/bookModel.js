@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_FILE = path.join(__dirname, '../DATABASE/books.json'); // Usar un archivo JSON simple por ahora
-
+const DATA_FILE = path.join(__dirname, '../DATABASE/books.json'); 
 class BookModel {
     constructor() {
         this.books = this.loadBooks();
@@ -14,7 +13,7 @@ class BookModel {
             return JSON.parse(data);
         } catch (error) {
             console.error('Error loading books data:', error);
-            return []; // Retorna un array vacío si el archivo no existe o hay un error
+            return []; 
         }
     }
 
@@ -35,7 +34,6 @@ class BookModel {
     }
 
     create(newBook) {
-        // Asignar un ID simple por ahora (en un entorno real usarías UUIDs o IDs de base de datos)
         newBook.id = Date.now().toString(); 
         this.books.push(newBook);
         this.saveBooks();
@@ -45,7 +43,7 @@ class BookModel {
     update(id, updatedBook) {
         const index = this.books.findIndex(book => book.id === id);
         if (index !== -1) {
-            this.books[index] = { ...this.books[index], ...updatedBook, id }; // Mantener el mismo ID
+            this.books[index] = { ...this.books[index], ...updatedBook, id }; 
             this.saveBooks();
             return this.books[index];
         }
@@ -56,7 +54,7 @@ class BookModel {
         const initialLength = this.books.length;
         this.books = this.books.filter(book => book.id !== id);
         this.saveBooks();
-        return this.books.length < initialLength; // Retorna true si se eliminó, false si no se encontró
+        return this.books.length < initialLength; 
     }
 }
 
