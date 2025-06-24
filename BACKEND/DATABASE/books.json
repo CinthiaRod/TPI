@@ -1,8 +1,14 @@
 [
   {
     "id": 1,
-    "titulo": "El laberinto de la soledad",
+    "titulo": "Soledad",
     "autor": "Octavio Paz",
     "anio": 1950
+  },
+  {
+    "titulo": "Los juegos del hambre",
+    "autor": "Suzanne Collins",
+    "anio": 2008,
+    "id": "1750751256296"
   }
 ]

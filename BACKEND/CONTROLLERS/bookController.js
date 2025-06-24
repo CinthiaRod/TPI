@@ -37,7 +37,7 @@ class BookController {
         try {
             const { id } = req.params;
             const updatedData = req.body;
-            const updatedBook = bookService.updateBook(id, updatedData);
+            const updatedBook = bookService.updateBook(parseInt(id), updatedData);
             if (!updatedBook) {
                 return res.status(404).json({ message: 'Libro no encontrado para actualizar' });
             }
@@ -54,7 +54,7 @@ class BookController {
             if (!deleted) {
                 return res.status(404).json({ message: 'Libro no encontrado para eliminar' });
             }
-            res.status(204).send(); 
+            return res.status(200).json({ message: "Se eliminó correctamente!"}); 
         } catch (error) {
             next(error);
         }

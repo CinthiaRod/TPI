@@ -1,23 +1,23 @@
 const bookModel = require('../models/bookModel');
 
 class BookService {
-    async getAllBooks() {
+    getAllBooks() {
         return bookModel.findAll();
     }
 
-    async getBookById(id) {
+    getBookById(id) {
         return bookModel.findById(id);
     }
 
-    async addBook(bookData) {
+    addBook(bookData) {
         return bookModel.create(bookData);
     }
 
-    async updateBook(id, bookData) {
+    updateBook(id, bookData) {
         return bookModel.update(id, bookData);
     }
 
-    async deleteBook(id) {
+    deleteBook(id) {
         return bookModel.delete(id);
     }
 }

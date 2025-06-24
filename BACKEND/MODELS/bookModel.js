@@ -1,3 +1,4 @@
+const { log } = require('console');
 const fs = require('fs');
 const path = require('path');
 
@@ -42,6 +43,7 @@ class BookModel {
 
     update(id, updatedBook) {
         const index = this.books.findIndex(book => book.id === id);
+        
         if (index !== -1) {
             this.books[index] = { ...this.books[index], ...updatedBook, id }; 
             this.saveBooks();
@@ -54,7 +56,8 @@ class BookModel {
         const initialLength = this.books.length;
         this.books = this.books.filter(book => book.id !== id);
         this.saveBooks();
-        return this.books.length < initialLength; 
+
+        return this.books.length < initialLength
     }
 }
 
