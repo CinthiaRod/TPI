@@ -36,6 +36,10 @@ class UserModel {
         this.saveUsers();
         return newUser;
     }
+
+    getUsers(){
+        return this.users;
+    }
 }
 
 module.exports = new UserModel();
