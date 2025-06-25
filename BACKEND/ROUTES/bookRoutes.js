@@ -8,8 +8,8 @@ const userController = require('../CONTROLLERS/usersController');
 router.get('/', bookController.getAllBooks); 
 router.get('/:id', bookController.getBookById);
 
-router.post('/', authMiddleware.verifyToken, bookController.createBook); 
-router.put('/:id', authMiddleware.verifyToken, bookController.updateBook); 
-router.delete('/:id', authMiddleware.verifyToken, bookController.deleteBook); 
+router.post('/', authMiddleware.verifyAdmin, bookController.createBook); 
+router.put('/:id', authMiddleware.verifyAdmin, bookController.updateBook); 
+router.delete('/:id', authMiddleware.verifyAdmin, bookController.deleteBook); 
 
 module.exports = router;

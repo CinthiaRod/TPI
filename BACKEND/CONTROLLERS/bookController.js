@@ -50,7 +50,7 @@ class BookController {
     async deleteBook(req, res, next) {
         try {
             const { id } = req.params;
-            const deleted = bookService.deleteBook(id);
+            const deleted = bookService.deleteBook(parseInt(id));
             if (!deleted) {
                 return res.status(404).json({ message: 'Libro no encontrado para eliminar' });
             }

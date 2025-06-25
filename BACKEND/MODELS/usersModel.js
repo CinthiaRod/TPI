@@ -31,7 +31,7 @@ class UserModel {
     }
 
     create(newUser) {
-        newUser.id = Date.now().toString(); 
+        newUser.id = parseInt(Date.now().toString()); 
         this.users.push(newUser);
         this.saveUsers();
         return newUser;

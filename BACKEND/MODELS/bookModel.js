@@ -35,7 +35,7 @@ class BookModel {
     }
 
     create(newBook) {
-        newBook.id = Date.now().toString(); 
+        newBook.id = parseInt(Date.now().toString()); 
         this.books.push(newBook);
         this.saveBooks();
         return newBook;
