@@ -1,14 +1,23 @@
 [
   {
-    "id": 1,
-    "titulo": "Soledad",
-    "autor": "Octavio Paz",
-    "anio": 1950
+    "title": "Los juegos del hambre",
+    "author": "Suzanne Collins",
+    "year": 2008,
+    "id": 1750824185795,
+    "stock": 3
   },
   {
-    "titulo": "Los juegos del hambre",
-    "autor": "Suzanne Collins",
-    "anio": 2008,
-    "id": "1750751256296"
+    "title": "El sindrome de la impostora",
+    "author": "Anne Montarlot",
+    "year": 2020,
+    "stock": 2,
+    "id": 1750986162241
+  },
+  {
+    "title": "Introduction To Algorithms",
+    "author": "Thomas Cormen",
+    "year": 2010,
+    "stock": 1,
+    "id": 1750986251055
   }
 ]

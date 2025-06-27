@@ -41,9 +41,14 @@ class BookModel {// Clase BookModel para manejar la lógica de negocio relaciona
         return this.books.find(book => book.id === id);
     }
 
+<<<<<<< HEAD
     create(newBook) { // Crea un nuevo libro
         // Asigna un ID único al nuevo libro basado en la hora actual
         newBook.id = Date.now().toString(); 
+=======
+    create(newBook) {
+        newBook.id = parseInt(Date.now().toString()); 
+>>>>>>> 96ebe99f7383eaf797962fe6a320fdc5c51e3e84
         this.books.push(newBook);
         this.saveBooks();
         return newBook;

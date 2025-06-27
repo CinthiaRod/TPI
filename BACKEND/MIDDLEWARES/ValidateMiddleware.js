@@ -1,21 +1,31 @@
+//Funcion para validar libro
 const validateBook = (req, res, next) => {
-    const { titulo, autor, anio } = req.body;
+    //Obtener informacion del libro por parte del usuario
+    const { title, author, year } = req.body;
 
-    if (!titulo || typeof titulo !== 'string') {
-        res.status(400).json({ error: "El campo 'titulo' es requerido y debe ser string" });
+    //En caso de que falte el nombre del libro o esta información no sea de tipo 'caracter'
+    if (!title || typeof title !== 'string') {
+        //Mostrar codigo de estado y su mensaje de error sobre la información faltante o incorrecta
+        res.status(400).json({ error: "Validation error: 'title' is required and must be of type string." });
         return;
     }
-    if (!autor || typeof autor !== 'string') {
-        res.status(400).json({ error: "El campo 'autor' es requerido y debe ser string" });
+
+    //En caso de que falte el nombre del autor del libro o esta información no sea de tipo 'caracter'
+    if (!author || typeof author !== 'string') {
+        //Mostrar codigo de estado y su mensaje de error sobre la información faltante o incorrecta
+        res.status(400).json({ error: "Validation error: 'author' is required and must be of type string." });
         return;
     }
     
-    if (!anio || typeof anio !== 'number') {
-        res.status(400).json({ error: "El campo 'anio' es requerido y debe ser number" });
+    //En caso de que falte el nombre del autor del libro o esta información no sea de tipo 'numero'
+    if (!year || typeof year !== 'number') {
+        //Mostrar codigo de estado y su mensaje de error sobre la información faltante o incorrecta
+        res.status(400).json({ error: "Validation error: 'year' is required and must be of type number." });
         return;
     }
 
     next();
 };
 
+//Exportamos modulo
 module.exports = validateBook;

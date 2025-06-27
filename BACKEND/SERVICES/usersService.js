@@ -7,7 +7,7 @@ class UserService {
     async registerUser(username, password, role) {
         const existingUser = userModel.findByUsername(username);
         if (existingUser) {
-            throw new Error('El nombre de usuario ya existe');
+            throw new Error('Username already exists.');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10); // Hash de la contraseña 
@@ -18,12 +18,12 @@ class UserService {
     async loginUser(username, password) {
         const user = userModel.findByUsername(username);
         if (!user) {
-            throw new Error('Credenciales inválidas');
+            throw new Error('Invalid credentials: user not found.');
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            throw new Error('Credenciales inválidas');
+            throw new Error('Invalid credentials: incorrect password.');
         }
 
         // Generar token de autenticación 

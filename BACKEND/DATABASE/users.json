@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "id": 1750496539785,
     "username": "admin",
     "password": "$2b$10$Oqo/7BEeAsRQf3ZRXJxXjOxddSOeYGtIZYWx5f2/w3m8AoCSlblUm",
     "role": "admin"
@@ -8,7 +8,13 @@
   {
     "username": "ada",
     "password": "$2b$10$Oqo/7BEeAsRQf3ZRXJxXjOxddSOeYGtIZYWx5f2/w3m8AoCSlblUm",
-    "id": "1750496539786",
+    "id": 1750496539786,
     "role": "user"
+  },
+  {
+    "username": "hada",
+    "password": "$2b$10$d03oCmwgphDqDa9IHYAGGeE1WBMk.X033ISgce7SBj98qTEXlwOIa",
+    "role": "user",
+    "id": 1750823923578
   }
 ]
