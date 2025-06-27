@@ -43,7 +43,7 @@ class UserController {
             //En caso de que si se provea la información necesaria...
             const { token, user } = await userService.loginUser(username, password);
             //La solitud es exitosa y devolverá un token para acceder a otras funcionalidades
-            res.status(200).json({ message: 'Inicio de sesión exitoso', token, user }); 
+            res.status(200).json({ message: 'Login successful.', token, user }); 
 
         } catch (error) {//En caso de error, mostrarlo
             next(error);
