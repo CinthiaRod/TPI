@@ -5,7 +5,7 @@ const API_URL_BOOKS = '/books';
 async function fetchUsers() {
     const res = await fetch(API_URL_USERS);
     const users = await res.json();
-    console.log("Users fetched:", users); /
+    console.log("Users fetched:", users); 
 }
 
 async function submitUserForm(event) {
