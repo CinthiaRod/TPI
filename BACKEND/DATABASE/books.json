@@ -3,18 +3,14 @@
     "title": "Los juegos del hambre",
     "author": "Suzanne Collins",
     "year": 2008,
-    "id": 1750824185795
-  },
-  {
-    "title": "Los juegos del hambre",
-    "author": "Suzanne Collins",
-    "year": 2008,
-    "id": 1750751256296
+    "id": 1750824185795,
+    "stock": 3
   },
   {
     "title": "Introduction To Algorithms",
     "author": "Thomas Cormen",
     "year": 2010,
-    "id": 1750824185798
+    "id": 1750824185798,
+    "stock": 1
   }
 ]
