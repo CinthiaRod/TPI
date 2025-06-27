@@ -7,10 +7,17 @@
     "stock": 3
   },
   {
+    "title": "El sindrome de la impostora",
+    "author": "Anne Montarlot",
+    "year": 2020,
+    "stock": 2,
+    "id": 1750986162241
+  },
+  {
     "title": "Introduction To Algorithms",
     "author": "Thomas Cormen",
     "year": 2010,
-    "id": 1750824185798,
-    "stock": 1
+    "stock": 1,
+    "id": 1750986251055
   }
 ]
