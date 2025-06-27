@@ -1,80 +1,160 @@
+/* Importar la fuente de Google Fonts si no la tienes en tu HTML */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+/* * Definición de la animación de pulso.
+ * IMPORTANTE: Las reglas @keyframes deben estar al nivel superior del CSS.
+ */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.03); /* Ligeramente más grande para el H1 */
+        opacity: 0.95; /* Suave cambio de opacidad */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Merriweather", serif;
     margin: 0;
     padding: 0;
-    background-color: plum;
+    background-color: brown; /* Tono café claro */
+    color: #333; /* Color de texto general para asegurar contraste */
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    display: flex; /* Usamos flexbox para centrar el contenido principal */
+    justify-content: center; /* Centra horizontalmente el .container */
+    align-items: center; /* Centra verticalmente el .container */
+    flex-direction: column; /* Permite que el contenido se apile verticalmente si hay más elementos */
 }
 
 .container {
     max-width: 800px;
-    margin: 20px auto;
+    width: 90%; /* Hace que sea más adaptable en pantallas pequeñas */
+    margin: 20px auto; /* Centra el contenedor con margen */
     padding: 20px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* Sombra ligeramente más pronunciada */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
 }
+
+/* --- Estilos de Títulos --- */
 
 h1 {
     text-align: center;
+    color: #4A2E1F; /* Café oscuro para el título */
+    text-shadow: 2px 2px 4px rgba(155, 24, 24, 0.57); /* Sombra con un toque rojizo */
+    letter-spacing: 2px;
+    font-size: 2.8em; /* Un tamaño de fuente más grande para el título principal */
+    margin-bottom: 30px; /* Espacio debajo del título */
+    
+    /* Aplicación de la animación de pulso al H1 */
+    animation: pulse 2.5s infinite ease-in-out;
 }
 
 h2 {
-    margin-top: 20px;
+    margin-top: 30px;
+    position: relative; /* Necesario para posicionar el pseudo-elemento */
+    padding-bottom: 8px;
+    border-bottom: 2px dashed #c0b299; /* Línea de puntos más visible */
+    color: #5C3D2E; /* Color para los subtítulos */
+    font-size: 1.8em;
+    margin-bottom: 25px;
 }
 
+h2::before {
+    content: "📚"; /* Icono de libro como decoración */
+    margin-right: 12px;
+    font-size: 0.9em;
+    opacity: 0.8;
+    /* La animación 'pulse' ya no se aplica aquí, se movió al H1 */
+}
+
+/* --- Estilos de Opciones de Gestión y Botones --- */
+
 .management-options {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
 }
 
 .management-options button {
-    margin-right: 10px;
-    padding: 10px 15px;
+    padding: 12px 22px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: rgb(243, 152, 15);
     color: white;
     cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .management-options button:hover {
-    background-color: #0056b3;
+    background-color: rgb(245, 184, 92);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
+/* --- Estilos de Formularios --- */
+
 #user-form, #book-form {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-top: 30px;
+    padding: 25px;
+    border: 1px solid rgb(177, 126, 39);
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(107, 31, 31, 0.56), -5px -5px 15px rgba(228, 13, 13, 0.82);
+    background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
 }
 
 #user-form h3, #book-form h3 {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #4A2E1F;
+    font-size: 1.5em;
 }
+
+/* --- Estilos de Inputs y Selects dentro de Formularios --- */
 
 #user-management-form input,
 #user-management-form select,
 #book-management-form input {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box; 
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #BDB7AE;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
 }
+
+/* --- Estilos de Botones dentro de Formularios --- */
 
 #user-management-form button,
 #book-management-form button {
-    padding: 10px 15px;
+    padding: 12px 25px;
     border: none;
     border-radius: 5px;
-    background-color: #28a745;
+    background-color: rgb(33, 131, 56);
     color: white;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 #user-management-form button:hover,
 #book-management-form button:hover {
-    background-color: #218838;
+    background-color: rgb(34, 92, 46);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

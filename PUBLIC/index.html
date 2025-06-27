@@ -1,222 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Libreria TPI</title>
-        <link rel="stylesheet" href="style.css" />
+<!DOCTYPE html> <!-- Declara el tipo de documento como HTML5. Es fundamental para que el navegador lo interprete correctamente. -->
+<html lang="en"> <!-- Define el idioma principal del contenido del documento como inglés.-->
+    <head> <!-- Contiene metadatos sobre el documento, no el contenido visible. -->
+        <meta charset="UTF-8" /> <!-- Especifica la codificación de caracteres del documento como UTF-8.-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Configura la vista para dispositivos móviles.
+                                                                                 * width=device-width: La anchura de la página se ajustará al ancho de la pantalla del dispositivo.
+                                                                                 * initial-scale=1.0: El nivel de zoom inicial cuando la página se carga por primera vez es 100%. -->
+        <title>Gestión de Libreria</title> <!-- Define el título que aparece en la pestaña del navegador o en la barra de título de la ventana. -->
+        <link rel="stylesheet" href="style.css" /> <!-- Enlaza el documento HTML con tu archivo de estilos CSS externo ("style.css"). Esto aplica los estilos visuales a la página. -->
     </head>
-    <body>
-        <div class="container">
-            <h1>Libreria TPI</h1>
+    <body> <!-- Contiene todo el contenido visible de tu página web, como texto, imágenes, enlaces, formularios, etc. -->
+        <div class="container"> <!-- Un elemento <div> que actúa como un contenedor principal para organizar el contenido. La clase "container" le permite aplicar estilos específicos definidos en style.css (como ancho máximo, centrado, sombra, etc.). -->
+            <h1>Librería</h1> <!-- Un encabezado de nivel 1, el título principal de tu aplicación. -->
 
-            <h2>User Management</h2>
-            <div class="management-options">
-                <button onclick="openUserForm('create')">Create User</button>
-                <button onclick="openUserForm('modify')">Modify User</button>
-                <button onclick="openUserForm('delete')">Delete User</button>
+            <h2>Users</h2> <!-- Un encabezado de nivel 2 para la sección de gestión de usuarios. -->
+            <div class="management-options"> <!-- Otro <div> para agrupar botones relacionados con la gestión de usuarios. La clase "management-options" aplica estilos CSS específicos. -->
+                <button onclick="openUserForm('create')">Register</button> <!-- Un botón para abrir el formulario de registro de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'create'. -->
+                <button onclick="openUserForm('modify')">Login</button> <!-- Un botón para abrir el formulario de inicio de sesión de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'modify'. -->
             </div>
 
-            <h2>Book Management</h2>
-            <div class="management-options">
-                <button onclick="openBookForm('create')">Create Book</button>
-                <button onclick="openBookForm('modify')">Modify Book</button>
-                <button onclick="openBookForm('delete')">Delete Book</button>
+            <h2>Book</h2> <!-- Un encabezado de nivel 2 para la sección de gestión de libros. -->
+            <div class="management-options"> <!-- Un <div> para agrupar botones relacionados con la gestión de libros, también con la clase "management-options" para estilos. -->
+                <button onclick="openBookForm('create')">List of all Books</button> <!-- Botón para listar todos los libros. Llama a 'openBookForm' con 'create'. (Nota: La etiqueta 'create' aquí podría ser confusa para "List", normalmente se usaría un nombre de acción más descriptivo como 'list' o 'read'). -->
+                <button onclick="openBookForm('create')">Add Book</button> <!-- Botón para añadir un nuevo libro. Llama a 'openBookForm' con 'create'. -->
+                <button onclick="openBookForm('modify')">Modify Book</button> <!-- Botón para modificar un libro existente. Llama a 'openBookForm' con 'modify'. -->
+                <button onclick="openBookForm('delete')">Delete Book</button> <!-- Botón para eliminar un libro. Llama a 'openBookForm' con 'delete'. -->
             </div>
 
-            <div id="user-form" style="display: none">
-                <h3>User Form</h3>
-                <form id="user-management-form" onsubmit="submitUserForm(event)">
-                    <input
-                        type="hidden"
-                        id="user-action"
-                        name="action"
-                        value=""
-                    />
-                    <input
-                        type="number"
-                        id="user-id"
-                        placeholder="User ID (for modify/delete)"
-                    />
-                    <input
-                        type="text"
-                        id="user-username"
-                        placeholder="User Name"
-                        required
-                    />
-                    <input
-                        type="password"
-                        id="user-password"
-                        placeholder="User Password"
-                        required
-                    />
-                    <select id="user-role">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
+            <div id="user-form" style="display: none"> <!-- Un <div> que contiene el formulario para operaciones de usuario (registro/login).
+                                                        * id="user-form": Un identificador único para este elemento, usado por JavaScript.
+                                                        * style="display: none": Inicialmente, este formulario está oculto en la página. Se mostrará con JavaScript. -->
+                <h3>User Form</h3> <!-- Encabezado dentro del formulario de usuario. -->
+                <form id="user-management-form" onsubmit="submitUserForm(event)"> <!-- Un elemento <form> para la entrada de datos del usuario.
+                                                                                    * id="user-management-form": Un identificador único para este formulario.
+                                                                                    * onsubmit="submitUserForm(event)": Cuando se envía este formulario, se llama a la función JavaScript 'submitUserForm', pasándole el evento. -->
+                    <input type="hidden" id="user-action" name="action" value="" /> <!-- Un campo de entrada oculto. Se usa para almacenar la acción actual (create, modify, delete) que se está realizando en el formulario de usuario. -->
+                    <input type="number" id="user-id" placeholder="User ID (for modify/delete)" /> <!-- Campo para ingresar el ID del usuario. Solo es relevante para las operaciones de modificar/eliminar. Se muestra/oculta con JavaScript. -->
+                    <input type="text" id="user-username" placeholder="User Name" required /> <!-- Campo para ingresar el nombre de usuario. El atributo 'required' significa que no se puede enviar el formulario si este campo está vacío. -->
+                    <input type="password" id="user-password" placeholder="User Password" required /> <!-- Campo para ingresar la contraseña. El atributo 'required' lo hace obligatorio. -->
+                    <select id="user-role"> <!-- Un menú desplegable para seleccionar el rol del usuario (User o Admin). -->
+                        <option value="user">User</option> <!-- Opción con valor "user". -->
+                        <option value="admin">Admin</option> <!-- Opción con valor "admin". -->
                     </select>
-                    <button type="submit">Submit</button>
-                    <button type="button" onclick="closeForm('user-form')">
-                        Cancel
-                    </button>
+                    <button type="submit">Submit</button> <!-- Botón para enviar el formulario. Al hacer clic, activará la función 'submitUserForm'. -->
+                    <button type="button" onclick="closeForm('user-form')">Cancel</button> <!-- Botón para cancelar y cerrar el formulario. Llama a la función JavaScript 'closeForm'. -->
                 </form>
             </div>
 
-            <div id="book-form" style="display: none">
-                <h3>Book Form</h3>
-                <form id="book-management-form" onsubmit="submitBookForm(event)">
-                    <input
-                        type="hidden"
-                        id="book-action"
-                        name="action"
-                        value=""
-                    />
-                    <input
-                        type="number"
-                        id="book-id"
-                        placeholder="Book ID (for modify/delete)"
-                    />
-                    <input
-                        type="text"
-                        id="book-title"
-                        placeholder="Book Title"
-                        required
-                    />
-                    <input
-                        type="text"
-                        id="book-author"
-                        placeholder="Book Author"
-                        required
-                    />
-                    <input
-                        type="number"
-                        id="book-year"
-                        placeholder="Book Year"
-                        required
-                    />
-                    <input
-                        type="number"
-                        id="book-stock"
-                        placeholder="Book Stock"
-                        required
-                    />
-                    <button type="submit">Submit</button>
-                    <button type="button" onclick="closeForm('book-form')">
-                        Cancel
-                    </button>
+            <div id="book-form" style="display: none"> <!-- Un <div> que contiene el formulario para operaciones de libros, similar al formulario de usuario. Inicialmente oculto. -->
+                <h3>Book Form</h3> <!-- Encabezado dentro del formulario de libro. -->
+                <form id="book-management-form" onsubmit="submitBookForm(event)"> <!-- Formulario para la gestión de libros. Cuando se envía, llama a 'submitBookForm'. -->
+                    <input type="hidden" id="book-action" name="action" value="" /> <!-- Campo oculto para la acción actual del libro (create, modify, delete). -->
+                    <input type="number" id="book-id" placeholder="Book ID (for modify/delete)" /> <!-- Campo para el ID del libro, relevante para modificar/eliminar. -->
+                    <input type="text" id="book-title" placeholder="Book Title" required /> <!-- Campo para el título del libro, obligatorio. -->
+                    <input type="text" id="book-author" placeholder="Book Author" required /> <!-- Campo para el autor del libro, obligatorio. -->
+                    <input type="number" id="book-year" placeholder="Book Year" required /> <!-- Campo para el año del libro, obligatorio. -->
+                    <input type="number" id="book-stock" placeholder="Book Stock" required /> <!-- Campo para el stock del libro, obligatorio. -->
+                    <button type="submit">Submit</button> <!-- Botón para enviar el formulario del libro. -->
+                    <button type="button" onclick="closeForm('book-form')">Cancel</button> <!-- Botón para cancelar y cerrar el formulario del libro. -->
                 </form>
             </div>
         </div>
 
-        <script>
+        <script> <!-- Inicia un bloque de código JavaScript incrustado directamente en el HTML. Este código se ejecutará una vez que el navegador lo procese. -->
+            // Función para abrir el formulario de usuario y configurar la acción.
             function openUserForm(action) {
-                document.getElementById("user-action").value = action;
-                document.getElementById("user-form").style.display = "block";
-                document.getElementById("user-id").style.display =
-                    action !== "create" ? "block" : "none";
+                document.getElementById("user-action").value = action; // Establece el valor del campo oculto 'user-action' a la acción pasada (ej. 'create', 'modify').
+                document.getElementById("user-form").style.display = "block"; // Hace visible el formulario de usuario.
+                document.getElementById("user-id").style.display = // Controla la visibilidad del campo "User ID".
+                    action !== "create" ? "block" : "none"; // Si la acción NO es 'create', muestra el campo de ID; de lo contrario, lo oculta.
             }
 
+            // Función para abrir el formulario de libro y configurar la acción. Funciona de manera similar a openUserForm.
             function openBookForm(action) {
-                document.getElementById("book-action").value = action;
-                document.getElementById("book-form").style.display = "block";
-                document.getElementById("book-id").style.display =
-                    action !== "create" ? "block" : "none";
+                document.getElementById("book-action").value = action; // Establece la acción del libro.
+                document.getElementById("book-form").style.display = "block"; // Muestra el formulario de libro.
+                document.getElementById("book-id").style.display = // Controla la visibilidad del campo "Book ID".
+                    action !== "create" ? "block" : "none"; // Si la acción NO es 'create', muestra el campo de ID; de lo contrario, lo oculta.
             }
 
+            // Función genérica para cerrar cualquier formulario.
             function closeForm(formId) {
-                document.getElementById(formId).style.display = "none";
+                document.getElementById(formId).style.display = "none"; // Oculta el formulario especificado por su ID.
             }
 
+            // Función asíncrona para manejar el envío del formulario de usuario.
             async function submitUserForm(event) {
-                event.preventDefault();
+                event.preventDefault(); // Previene el comportamiento predeterminado del formulario (recargar la página).
 
-                const action = document.getElementById("user-action").value;
-                const id = document.getElementById("user-id").value;
-                const username = document.getElementById("user-username").value;
-                const password = document.getElementById("user-password").value;
-                const role = document.getElementById("user-role").value;
+                const action = document.getElementById("user-action").value; // Obtiene la acción (create, modify, delete).
+                const id = document.getElementById("user-id").value; // Obtiene el ID del usuario (si aplica).
+                const username = document.getElementById("user-username").value; // Obtiene el nombre de usuario.
+                const password = document.getElementById("user-password").value; // Obtiene la contraseña.
+                const role = document.getElementById("user-role").value; // Obtiene el rol.
 
-                const userData = {
+                const userData = { // Crea un objeto con los datos del usuario a enviar.
                     username: username,
                     password: password,
                     role: role,
                 };
 
-                let url = "/users";
-                let method = "POST"; 
-                if (action !== "create") {
-                    url = `/users/${id}`;
-                    method = action === "modify" ? "PUT" : "DELETE";
+                let url = "/users"; // URL base para operaciones de usuario.
+                let method = "POST"; // Método HTTP predeterminado para 'create'.
+
+                if (action !== "create") { // Si la acción no es 'create' (es 'modify' o 'delete').
+                    url = `/users/${id}`; // La URL incluye el ID del usuario.
+                    method = action === "modify" ? "PUT" : "DELETE"; // El método será PUT para modificar, DELETE para eliminar.
                 }
 
-                try {
-                    const response = await fetch(url, {
-                        method: method,
+                try { // Inicia un bloque try-catch para manejar errores.
+                    const response = await fetch(url, { // Realiza una petición fetch a la API.
+                        method: method, // Método HTTP (POST, PUT, DELETE).
                         headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type": "application/json", // Indica que el cuerpo de la petición es JSON.
                         },
-                        body: JSON.stringify(userData),
+                        body: JSON.stringify(userData), // Convierte el objeto userData a una cadena JSON y lo envía como cuerpo.
                     });
 
-                    if (!response.ok) {
-                        throw new Error(
+                    if (!response.ok) { // Si la respuesta HTTP no es exitosa (ej. 400, 500).
+                        throw new Error( // Lanza un error con el estado HTTP.
                             `HTTP error! Status: ${response.status}`
                         );
                     }
 
-                    const result = await response.json();
-                    console.log("Success:", result);
-                    closeForm("user-form");
-                    // Optionally refresh user list here
-                } catch (error) {
-                    console.error("Error:", error);
+                    const result = await response.json(); // Parsea la respuesta JSON del servidor.
+                    console.log("Success:", result); // Muestra el resultado exitoso en la consola.
+                    closeForm("user-form"); // Cierra el formulario de usuario.
+                    // Opcionalmente, aquí se podría llamar a una función para refrescar la lista de usuarios.
+                } catch (error) { // Captura cualquier error que ocurra durante la petición o procesamiento.
+                    console.error("Error:", error); // Muestra el error en la consola.
                 }
             }
 
+            // Función asíncrona para manejar el envío del formulario de libros. Funciona de manera similar a submitUserForm.
             async function submitBookForm(event) {
-                event.preventDefault();
+                event.preventDefault(); // Previene la recarga de la página.
 
-                const action = document.getElementById("book-action").value;
-                const id = document.getElementById("book-id").value;
-                const title = document.getElementById("book-title").value;
-                const author = document.getElementById("book-author").value;
-                 const year = document.getElementById("book-year").value;
-                const stock = document.getElementById("book-stock").value;
+                const action = document.getElementById("book-action").value; // Obtiene la acción del libro.
+                const id = document.getElementById("book-id").value; // Obtiene el ID del libro.
+                const title = document.getElementById("book-title").value; // Obtiene el título.
+                const author = document.getElementById("book-author").value; // Obtiene el autor.
+                const year = document.getElementById("book-year").value; // Obtiene el año.
+                const stock = document.getElementById("book-stock").value; // Obtiene el stock.
 
-                const bookData = {
+                const bookData = { // Crea un objeto con los datos del libro a enviar.
                     title: title,
                     author: author,
                     year: year,
                     stock: stock
                 };
 
-                let url = "/books";
-                let method = "POST"; 
-                if (action !== "create") {
-                    url = `/books/${id}`;
-                    method = action === "modify" ? "PUT" : "DELETE";
+                let url = "/books"; // URL base para operaciones de libros.
+                let method = "POST"; // Método HTTP predeterminado para 'create'.
+
+                if (action !== "create") { // Si la acción no es 'create'.
+                    url = `/books/${id}`; // La URL incluye el ID del libro.
+                    method = action === "modify" ? "PUT" : "DELETE"; // El método será PUT para modificar, DELETE para eliminar.
                 }
 
-                try {
-                    const response = await fetch(url, {
-                        method: method,
+                try { // Inicia un bloque try-catch.
+                    const response = await fetch(url, { // Realiza una petición fetch a la API.
+                        method: method, // Método HTTP.
                         headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type": "application/json", // Indica que el cuerpo es JSON.
                         },
-                        body: JSON.stringify(bookData),
+                        body: JSON.stringify(bookData), // Convierte el objeto bookData a JSON y lo envía.
                     });
 
-                    if (!response.ok) {
+                    if (!response.ok) { // Si la respuesta no es exitosa.
                         throw new Error(
                             `HTTP error! Status: ${response.status}`
                         );
                     }
 
-                    const result = await response.json();
-                    console.log("Success:", result);
-                    closeForm("book-form");
-                    
-                } catch (error) {
-                    console.error("Error:", error);
+                    const result = await response.json(); // Parsea la respuesta JSON.
+                    console.log("Success:", result); // Muestra el resultado.
+                    closeForm("book-form"); // Cierra el formulario del libro.
+                    // Opcionalmente, aquí se podría llamar a una función para refrescar la lista de libros.
+                } catch (error) { // Captura errores.
+                    console.error("Error:", error); // Muestra el error.
                 }
             }
         </script>
