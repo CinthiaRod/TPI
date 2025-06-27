@@ -110,7 +110,7 @@ h2::before {
     padding: 25px;
     border: 1px solid rgb(177, 126, 39);
     border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(107, 31, 31, 0.56), -5px -5px 15px rgba(228, 13, 13, 0.82);
+    box-shadow: 5px 5px 15px rgba(107, 31, 31, 0.56), -5px -5px 15px rgba(145, 22, 22, 0.82);
     background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
 }
 
