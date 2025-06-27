@@ -142,7 +142,7 @@
                 };
 
                 let url = "/users";
-                let method = "POST"; // Default for create
+                let method = "POST"; 
                 if (action !== "create") {
                     url = `/users/${id}`;
                     method = action === "modify" ? "PUT" : "DELETE";
@@ -190,7 +190,7 @@
                 };
 
                 let url = "/books";
-                let method = "POST"; // Default for create
+                let method = "POST"; 
                 if (action !== "create") {
                     url = `/books/${id}`;
                     method = action === "modify" ? "PUT" : "DELETE";
