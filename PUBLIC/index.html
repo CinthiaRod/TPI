@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Libreria TPI</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Libreria TPI</h1>
+
+            <h2>User Management</h2>
+            <div class="management-options">
+                <button onclick="openUserForm('create')">Create User</button>
+                <button onclick="openUserForm('modify')">Modify User</button>
+                <button onclick="openUserForm('delete')">Delete User</button>
+            </div>
+
+            <h2>Book Management</h2>
+            <div class="management-options">
+                <button onclick="openBookForm('create')">Create Book</button>
+                <button onclick="openBookForm('modify')">Modify Book</button>
+                <button onclick="openBookForm('delete')">Delete Book</button>
+            </div>
+
+            <div id="user-form" style="display: none">
+                <h3>User Form</h3>
+                <form id="user-management-form" onsubmit="submitUserForm(event)">
+                    <input
+                        type="hidden"
+                        id="user-action"
+                        name="action"
+                        value=""
+                    />
+                    <input
+                        type="number"
+                        id="user-id"
+                        placeholder="User ID (for modify/delete)"
+                    />
+                    <input
+                        type="text"
+                        id="user-username"
+                        placeholder="User Name"
+                        required
+                    />
+                    <input
+                        type="password"
+                        id="user-password"
+                        placeholder="User Password"
+                        required
+                    />
+                    <select id="user-role">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                    <button type="button" onclick="closeForm('user-form')">
+                        Cancel
+                    </button>
+                </form>
+            </div>
+
+            <div id="book-form" style="display: none">
+                <h3>Book Form</h3>
+                <form id="book-management-form" onsubmit="submitBookForm(event)">
+                    <input
+                        type="hidden"
+                        id="book-action"
+                        name="action"
+                        value=""
+                    />
+                    <input
+                        type="number"
+                        id="book-id"
+                        placeholder="Book ID (for modify/delete)"
+                    />
+                    <input
+                        type="text"
+                        id="book-title"
+                        placeholder="Book Title"
+                        required
+                    />
+                    <input
+                        type="text"
+                        id="book-author"
+                        placeholder="Book Author"
+                        required
+                    />
+                    <input
+                        type="number"
+                        id="book-year"
+                        placeholder="Book Year"
+                        required
+                    />
+                    <input
+                        type="number"
+                        id="book-stock"
+                        placeholder="Book Stock"
+                        required
+                    />
+                    <button type="submit">Submit</button>
+                    <button type="button" onclick="closeForm('book-form')">
+                        Cancel
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openUserForm(action) {
+                document.getElementById("user-action").value = action;
+                document.getElementById("user-form").style.display = "block";
+                document.getElementById("user-id").style.display =
+                    action !== "create" ? "block" : "none";
+            }
+
+            function openBookForm(action) {
+                document.getElementById("book-action").value = action;
+                document.getElementById("book-form").style.display = "block";
+                document.getElementById("book-id").style.display =
+                    action !== "create" ? "block" : "none";
+            }
+
+            function closeForm(formId) {
+                document.getElementById(formId).style.display = "none";
+            }
+
+            async function submitUserForm(event) {
+                event.preventDefault();
+
+                const action = document.getElementById("user-action").value;
+                const id = document.getElementById("user-id").value;
+                const username = document.getElementById("user-username").value;
+                const password = document.getElementById("user-password").value;
+                const role = document.getElementById("user-role").value;
+
+                const userData = {
+                    username: username,
+                    password: password,
+                    role: role,
+                };
+
+                let url = "/users";
+                let method = "POST"; // Default for create
+                if (action !== "create") {
+                    url = `/users/${id}`;
+                    method = action === "modify" ? "PUT" : "DELETE";
+                }
+
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(userData),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! Status: ${response.status}`
+                        );
+                    }
+
+                    const result = await response.json();
+                    console.log("Success:", result);
+                    closeForm("user-form");
+                    // Optionally refresh user list here
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+
+            async function submitBookForm(event) {
+                event.preventDefault();
+
+                const action = document.getElementById("book-action").value;
+                const id = document.getElementById("book-id").value;
+                const title = document.getElementById("book-title").value;
+                const author = document.getElementById("book-author").value;
+                 const year = document.getElementById("book-year").value;
+                const stock = document.getElementById("book-stock").value;
+
+                const bookData = {
+                    title: title,
+                    author: author,
+                    year: year,
+                    stock: stock
+                };
+
+                let url = "/books";
+                let method = "POST"; // Default for create
+                if (action !== "create") {
+                    url = `/books/${id}`;
+                    method = action === "modify" ? "PUT" : "DELETE";
+                }
+
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(bookData),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! Status: ${response.status}`
+                        );
+                    }
+
+                    const result = await response.json();
+                    console.log("Success:", result);
+                    closeForm("book-form");
+                    
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+        </script>
+    </body>
+</html>
