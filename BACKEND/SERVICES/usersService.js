@@ -18,8 +18,9 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         const newUser = { username, password: hashedPassword, role: role}; // Crea un nuevo objeto de usuario
         return userModel.create(newUser);
     }
-
-    async loginUser(username, password) { // Inicia sesión de un usuario existente
+    }
+    async loginUser(username, password) 
+    { // Inicia sesión de un usuario existente
         // Busca el usuario por nombre de usuario
         const user = userModel.findByUsername(username);
         if (!user) {
@@ -41,7 +42,8 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         return { token, user: { id: user.id, username: user.username } };
     }
 
-    async getUsers(){ // Devuelve todos los usuarios registrados
+    async getUsers()
+    { // Devuelve todos los usuarios registrados
         // Esta función no recibe parámetros y simplemente retorna el array de usuarios cargado
         // desde el modelo de usuarios.
         return userModel.getUsers();

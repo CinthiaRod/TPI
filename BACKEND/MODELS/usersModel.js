@@ -33,14 +33,14 @@ class UserModel { // Clase UserModel para manejar la lógica de negocio relacion
         return this.users.find(user => user.username.toLowerCase() === username.toLowerCase());
     }
 
-<<<<<<< HEAD
+
     create(newUser) { // Crea un nuevo usuario
         // Asigna un ID único al nuevo usuario basado en la hora actual
         newUser.id = Date.now().toString(); 
-=======
+
     create(newUser) {
         newUser.id = parseInt(Date.now().toString()); 
->>>>>>> 96ebe99f7383eaf797962fe6a320fdc5c51e3e84
+
         this.users.push(newUser);
         this.saveUsers();
         return newUser;
