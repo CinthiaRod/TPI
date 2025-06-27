@@ -38,7 +38,7 @@ class UserModel { // Clase UserModel para manejar la lógica de negocio relacion
         // Asigna un ID único al nuevo usuario basado en la hora actual
         newUser.id = Date.now().toString(); 
 
-    create(newUser) {
+    create(newUser); {
         newUser.id = parseInt(Date.now().toString()); 
 
         this.users.push(newUser);
@@ -46,10 +46,10 @@ class UserModel { // Clase UserModel para manejar la lógica de negocio relacion
         return newUser;
     }
 
-    getUsers(){ // Devuelve todos los usuarios
+    getUsers();{ // Devuelve todos los usuarios
         // Esta función no recibe parámetros y simplemente retorna el array de usuarios cargado
         return this.users;
     }
-}
+}}
 
 module.exports = new UserModel(); // Exporta una instancia de UserModel para que pueda ser utilizada en otros módulos
