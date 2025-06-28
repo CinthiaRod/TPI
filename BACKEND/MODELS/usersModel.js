@@ -34,22 +34,20 @@ class UserModel { // Clase UserModel para manejar la lógica de negocio relacion
     }
 
 
+    
+
     create(newUser) { // Crea un nuevo usuario
-        // Asigna un ID único al nuevo usuario basado en la hora actual
-        newUser.id = Date.now().toString(); 
+        newUser.id = parseInt(Date.now().toString()); // Asigna un ID único basado en la fecha y hora actual
 
-    create(newUser); {
-        newUser.id = parseInt(Date.now().toString()); 
-
-        this.users.push(newUser);
-        this.saveUsers();
-        return newUser;
+        this.users.push(newUser); // Agrega el nuevo usuario al array de usuarios
+        this.saveUsers(); // Guarda los usuarios actualizados en el archivo JSON
+        return newUser; // Retorna el nuevo usuario creado
     }
 
-    getUsers();{ // Devuelve todos los usuarios
+    getUsers() { // Devuelve todos los usuarios
         // Esta función no recibe parámetros y simplemente retorna el array de usuarios cargado
         return this.users;
     }
-}}
+}
 
 module.exports = new UserModel(); // Exporta una instancia de UserModel para que pueda ser utilizada en otros módulos
