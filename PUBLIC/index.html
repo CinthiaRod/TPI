@@ -16,11 +16,11 @@
             <div class="management-options"> <!-- Otro <div> para agrupar botones relacionados con la gestión de usuarios. La clase "management-options" aplica estilos CSS específicos. -->
                 <button onclick="openUserForm('create')">Register</button> <!-- Un botón para abrir el formulario de registro de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'create'. -->
                 <button onclick="openUserForm('modify')">Login</button> <!-- Un botón para abrir el formulario de inicio de sesión de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'modify'. -->
-            </div>
+            </div> 
 
             <h2>Book</h2> <!-- Un encabezado de nivel 2 para la sección de gestión de libros. -->
             <div class="management-options"> <!-- Un <div> para agrupar botones relacionados con la gestión de libros, también con la clase "management-options" para estilos. -->
-                <button onclick="openBookForm('create')">List of all Books</button> <!-- Botón para listar todos los libros. Llama a 'openBookForm' con 'create'. (Nota: La etiqueta 'create' aquí podría ser confusa para "List", normalmente se usaría un nombre de acción más descriptivo como 'list' o 'read'). -->
+                <button onclick="fetchAllBooks()">List of all Books</button> <!-- Botón para listar todos los libros. Llama a 'openBookForm' con 'create'. (Nota: La etiqueta 'create' aquí podría ser confusa para "List", normalmente se usaría un nombre de acción más descriptivo como 'list' o 'read'). -->
                 <button onclick="openBookForm('create')">Add Book</button> <!-- Botón para añadir un nuevo libro. Llama a 'openBookForm' con 'create'. -->
                 <button onclick="openBookForm('modify')">Modify Book</button> <!-- Botón para modificar un libro existente. Llama a 'openBookForm' con 'modify'. -->
                 <button onclick="openBookForm('delete')">Delete Book</button> <!-- Botón para eliminar un libro. Llama a 'openBookForm' con 'delete'. -->
