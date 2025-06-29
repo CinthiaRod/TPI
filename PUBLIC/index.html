@@ -83,7 +83,14 @@
 
         <script> 
         alert("Hello! The JavaScript is working!");
+const API_BASE_URL = 'http://localhost:3001'; // Make sure this matches your backend URL
 let authToken = localStorage.getItem('token') || null;
+
+function showLoginForm() {
+    closeForm('user-form');
+    closeForm('book-form');
+    document.getElementById('login-form').style.display = 'block';
+}
 
 function showLoginForm() {
     closeForm('user-form');
@@ -208,52 +215,53 @@ updateAuthStatus(); // Inicializa el estado de autenticación al cargar la pági
 
             // Función asíncrona para manejar el envío del formulario de usuario.
             async function submitUserForm(event) {
-                event.preventDefault(); // Previene el comportamiento predeterminado del formulario (recargar la página).
+    event.preventDefault();
 
-                const action = document.getElementById("user-action").value; // Obtiene la acción (create, modify, delete).
-                const id = document.getElementById("user-id").value; // Obtiene el ID del usuario (si aplica).
-                const username = document.getElementById("user-username").value; // Obtiene el nombre de usuario.
-                const password = document.getElementById("user-password").value; // Obtiene la contraseña.
-                const role = document.getElementById("user-role").value; // Obtiene el rol.
+    const action = document.getElementById("user-action").value;
+    const id = document.getElementById("user-id").value;
+    const username = document.getElementById("user-username").value;
+    const password = document.getElementById("user-password").value;
+    const role = document.getElementById("user-role").value;
 
-                const userData = { // Crea un objeto con los datos del usuario a enviar.
-                    username: username,
-                    password: password,
-                    role: role,
-                };
+    const userData = {
+        username: username,
+        password: password,
+        role: role,
+    };
 
-                let url = "/users"; // URL base para operaciones de usuario.
-                let method = "POST"; // Método HTTP predeterminado para 'create'.
+    let url = `${API_BASE_URL}/api/users`;
+    let method = "POST";
 
-                if (action !== "create") { // Si la acción no es 'create' (es 'modify' o 'delete').
-                    url = `/users/${id}`; // La URL incluye el ID del usuario.
-                    method = action === "modify" ? "PUT" : "DELETE"; // El método será PUT para modificar, DELETE para eliminar.
-                }
+    if (action !== "create") {
+        url = `${API_BASE_URL}/api/users/${id}`;
+        method = action === "modify" ? "PUT" : "DELETE";
+    }
 
-                try { // Inicia un bloque try-catch para manejar errores.
-                    const response = await fetch(url, { // Realiza una petición fetch a la API.
-                        method: method, // Método HTTP (POST, PUT, DELETE).
-                        headers: {
-                            "Content-Type": "application/json", // Indica que el cuerpo de la petición es JSON.
-                            "x-auth-token": authToken
-                        },
-                        body: JSON.stringify(userData), // Convierte el objeto userData a una cadena JSON y lo envía como cuerpo.
-                    });
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+            },
+            body: action === "delete" ? null : JSON.stringify(userData),
+        });
 
-                    if (!response.ok) { // Si la respuesta HTTP no es exitosa (ej. 400, 500).
-                        throw new Error( // Lanza un error con el estado HTTP.
-                            `HTTP error! Status: ${response.status}`
-                        );
-                    }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+        }
 
-                    const result = await response.json(); // Parsea la respuesta JSON del servidor.
-                    console.log("Success:", result); // Muestra el resultado exitoso en la consola.
-                    closeForm("user-form"); // Cierra el formulario de usuario.
-                    // Opcionalmente, aquí se podría llamar a una función para refrescar la lista de usuarios.
-                } catch (error) { // Captura cualquier error que ocurra durante la petición o procesamiento.
-                    console.error("Error:", error); // Muestra el error en la consola.
-                }
-            }
+        const result = await response.json();
+        console.log("Success:", result);
+        alert(action === "create" ? "User created successfully!" : 
+        action === "modify" ? "User updated successfully!" : "User deleted successfully!");
+        closeForm("user-form");
+    } catch (error) {
+        console.error("Error:", error);
+        alert(`Error: ${error.message}`);
+    }
+}
 
             // Función asíncrona para manejar el envío del formulario de libros. Funciona de manera similar a submitUserForm.
             async function submitBookForm(event) {

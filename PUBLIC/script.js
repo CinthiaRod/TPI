@@ -79,7 +79,11 @@ async function submitUserForm(event) {
     const role = document.getElementById("user-role").value;
 
     const userData = { username, password, role };
-    const url = action === "modify" ? "/users/login" : "/users/register";
+   const API_BASE_URL = 'http://localhost:3001'; 
+
+const url = action === "modify"
+  ? `${API_BASE_URL}/users/login`
+  : `${API_BASE_URL}/users/register`;
 
     try {
         const response = await fetch(url, {
