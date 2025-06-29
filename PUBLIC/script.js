@@ -1,7 +1,7 @@
 // Constantes para las URLs de tu API
 const API_URL_USERS = '/users'; // URL para las operaciones con usuarios (ej. http://localhost:3000/users)
 const API_URL_BOOKS = '/books'; // URL para las operaciones con libros (ej. http://localhost:3000/books)
-
+const API_BASE_URL = 'http://localhost:3001';
 // --- Funciones de Utilidad para la Interfaz (UI) ---
 // At the top of script.js
 let authToken = null;
