@@ -60,6 +60,7 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         // 2. Si el usuario NO existe, lanza un error de credenciales inválidas.
         if (!user) {
             console.log(`Intento de inicio de sesión fallido para '${username}': Usuario no encontrado.`);
+            
             const error = new Error('Credenciales inválidas. Usuario no encontrado');
             error.statusCode = 401;
             throw error;
@@ -71,6 +72,7 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         // 4. Si las contraseñas NO coinciden, lanza un error.
         if (!isMatch) {
             console.log(`Intento de inicio de sesión fallido para '${username}': Contraseña incorrecta.`);
+            
             const error = new Error('Credenciales inválidas. Contraseña incorrecta');
             error.statusCode = 401;
             throw error;
