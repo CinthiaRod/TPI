@@ -74,40 +74,64 @@ async function submitUserForm(event) {
     event.preventDefault();
 
     const action = document.getElementById("user-action").value;
+    const id = document.getElementById("user-id").value;
     const username = document.getElementById("user-username").value;
     const password = document.getElementById("user-password").value;
     const role = document.getElementById("user-role").value;
 
-    const userData = { username, password, role };
-   const API_BASE_URL = 'http://localhost:3001'; 
+    
+    let url, method;
+    if (action === "create") {
+        url = `${API_BASE_URL}/users/register`;
+        method = "POST";
+    } else if (action === "modify") {
+        url = `${API_BASE_URL}/users/login`;
+        method = "POST";
+    } else {
+        url = `${API_BASE_URL}/users/${id}`;
+        method = "DELETE";
+    }
 
-const url = action === "modify"
-  ? `${API_BASE_URL}/users/login`
-  : `${API_BASE_URL}/users/register`;
+    const userData = { username, password, role };
 
     try {
         const response = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(userData)
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": authToken ? `Bearer ${authToken}` : ""
+            },
+            body: action === "delete" ? null : JSON.stringify(userData)
         });
 
-        const result = await response.json();
-        
-        if (response.ok) {
-            if (action === "modify") {
-                authToken = result.token;
-                alert("Login successful! Token saved.");
-            } else {
-                alert("Registration successful!");
-            }
-            closeForm("user-form");
-        } else {
-            throw new Error(result.message || "Operation failed");
+     
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            const text = await response.text();
+            throw new Error(`Server returned ${response.status}: ${text}`);
         }
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || `HTTP error! Status: ${response.status}`);
+        }
+
+        console.log("Success:", result);
+        
+        if (action === "modify") {
+            
+            authToken = result.token;
+            localStorage.setItem('token', authToken);
+            updateAuthStatus();
+        }
+        
+        alert(action === "create" ? "User created successfully!" : 
+            action === "modify" ? "Login successful!" : "User deleted successfully!");
+        closeForm("user-form");
     } catch (error) {
-        alert("Error: " + error.message);
         console.error("Error:", error);
+        alert(`Error: ${error.message}`);
     }
 }
 
@@ -130,7 +154,7 @@ async function submitBookForm(event) {
         stock: parseInt(stock)
     };
 
-    let url = "/books";
+    url = `${API_BASE_URL}/books/${id}`;
     let method = "POST";
 
     if (action === "modify") {
