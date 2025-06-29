@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const bookRoutes = require('./ROUTES/bookRoutes');
 const usersRoutes = require ('./ROUTES/usersRoutes')
 const errorMiddleware = require('./MIDDLEWARES/ErrorMiddleware');
+const path = require('node:path');
 
 // Cargar variables de entorno desde .env 
 dotenv.config(); 
@@ -17,7 +18,7 @@ const PORT = process.env.PORT || 3001; // En caso de que falte la información, 
 //Es decir, interpretar automáticamente el cuerpo de las solicitudes entrantes en formato JSON.
 app.use(express.json()); 
 //Middleware para obtener la información del front
-app.use(express.static('PUBLIC'));
+app.use(express.static(path.join(__dirname, '..', 'PUBLIC')));
 
 app.get('/', (req, res) => {
   res.send(`
