@@ -132,12 +132,11 @@ async function fetchAllBooks() {
 
 async function fetchAllUsers() {
     try {
-        const response = await fetch('/users', {
-            headers: {
-                'x-auth-token': authToken
-            }
-        });
+        const headers = {
+                'authorization': `Bearer ${authToken}`
+        }
         
+        const response = await fetch('/users', {headers});
         if (!response.ok) {
             if (response.status === 401) {
                 alert('Please login first');
