@@ -18,14 +18,18 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         const existingUser = userModel.findByUsername(username);
         if (existingUser) {
             console.error(`Intento de registro fallido: El nombre de usuario '${username}' ya existe.`);
-            throw new Error('El nombre de usuario ya existe');
+            const error = new Error('El nombre de usuario ya existe');
+            error.statusCode = 400;
+            throw error;
         }
 
         // 2. Valida que el rol sea uno de los permitidos ('admin' o 'user')
         if (role !== 'admin' && role !== 'user') {
             console.error(`Intento de registro fallido: Rol no válido '${role}' para el usuario '${username}'.`);
             // Se podría optar por asignar un rol predeterminado como 'user' en lugar de lanzar un error.
-            throw new Error('Rol de usuario no válido. Debe ser "admin" o "user".');
+            const error = new Error('Rol de usuario no válido. Debe ser "admin" o "user".');
+            error.statusCode = 400;
+            throw error;
         }
 
         // 3. Hashea la contraseña antes de guardarla
@@ -56,7 +60,9 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         // 2. Si el usuario NO existe, lanza un error de credenciales inválidas.
         if (!user) {
             console.log(`Intento de inicio de sesión fallido para '${username}': Usuario no encontrado.`);
-            throw new Error('Credenciales inválidas');
+            const error = new Error('Credenciales inválidas. Usuario no encontrado');
+            error.statusCode = 401;
+            throw error;
         }
 
         // 3. Compara la contraseña proporcionada con la contraseña hasheada almacenada
@@ -65,7 +71,9 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         // 4. Si las contraseñas NO coinciden, lanza un error.
         if (!isMatch) {
             console.log(`Intento de inicio de sesión fallido para '${username}': Contraseña incorrecta.`);
-            throw new Error('Credenciales inválidas');
+            const error = new Error('Credenciales inválidas. Contraseña incorrecta');
+            error.statusCode = 401;
+            throw error;
         }
 
         // 5. **Verificación defensiva:** Asegúrate de que el objeto 'user' tiene las propiedades necesarias para el token.
@@ -73,7 +81,9 @@ class UserService { // Clase UserService para manejar la lógica de negocio rela
         //    si, por alguna razón, el 'user' recuperado del JSON no tiene 'id' o 'role'.
         if (!user.id || !user.username || !user.role) {
             console.error("Error crítico: El objeto de usuario recuperado del modelo está incompleto.", user);
-            throw new Error("Datos de usuario incompletos. Por favor, contacte al administrador.");
+            const error = new Error("Datos de usuario incompletos. Por favor, contacte al administrador.");
+            error.statusCode = 400;
+            throw error;
         }
 
         console.log(`Usuario '${user.username}' autenticado exitosamente. Generando token...`);
