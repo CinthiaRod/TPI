@@ -9,30 +9,50 @@
         <link rel="stylesheet" href="style.css" /> <!-- Enlaza el documento HTML con tu archivo de estilos CSS externo ("style.css"). Esto aplica los estilos visuales a la página. -->
     </head>
     <body> <!-- Contiene todo el contenido visible de tu página web, como texto, imágenes, enlaces, formularios, etc. -->
-        <div class="container"> <!-- Un elemento <div> que actúa como un contenedor principal para organizar el contenido. La clase "container" le permite aplicar estilos específicos definidos en style.css (como ancho máximo, centrado, sombra, etc.). -->
-            <h1>Bookshop</h1> <!-- Un encabezado de nivel 1, el título principal de tu aplicación. -->
+    <div class="container">
+    <h1>Bookshop</h1>
+    
+   
+    <div id="auth-status">
+        <p>You are not logged in</p>
+        <button onclick="showLoginForm()">Login</button>
+    </div>
 
-            <h2>Users</h2> <!-- Un encabezado de nivel 2 para la sección de gestión de usuarios. -->
-            <div class="management-options"> <!-- Otro <div> para agrupar botones relacionados con la gestión de usuarios. La clase "management-options" aplica estilos CSS específicos. -->
-                <button onclick="openUserForm('create')">Register</button> <!-- Un botón para abrir el formulario de registro de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'create'. -->
-                <button onclick="openUserForm('modify')">Login</button> <!-- Un botón para abrir el formulario de inicio de sesión de usuario. Cuando se hace clic, llama a la función JavaScript 'openUserForm' con el argumento 'modify'. -->
-            </div> 
+<h2>Users</h2>
+<div class="management-options">
+    <button onclick="checkAuthThen('fetchAllUsers')">List all Users</button>
+    <button onclick="checkAuthThen('openUserForm', 'create')">Register New User</button>
+    <button onclick="checkAuthThen('openUserForm', 'modify')">Modify User</button>
+    <button onclick="checkAuthThen('openUserForm', 'delete')">Delete User</button>
+</div>
 
-            <h2>Book</h2> <!-- Un encabezado de nivel 2 para la sección de gestión de libros. -->
-            <div class="management-options"> <!-- Un <div> para agrupar botones relacionados con la gestión de libros, también con la clase "management-options" para estilos. -->
-                <button onclick="fetchAllBooks()">List of all Books</button> <!-- Botón para listar todos los libros. Llama a 'openBookForm' con 'create'. (Nota: La etiqueta 'create' aquí podría ser confusa para "List", normalmente se usaría un nombre de acción más descriptivo como 'list' o 'read'). -->
-                <button onclick="openBookForm('create')">Add Book</button> <!-- Botón para añadir un nuevo libro. Llama a 'openBookForm' con 'create'. -->
-                <button onclick="openBookForm('modify')">Modify Book</button> <!-- Botón para modificar un libro existente. Llama a 'openBookForm' con 'modify'. -->
-                <button onclick="openBookForm('delete')">Delete Book</button> <!-- Botón para eliminar un libro. Llama a 'openBookForm' con 'delete'. -->
-            </div>
+    <h2>Book</h2>
+    <div class="management-options">
+        <button onclick="fetchAllBooks()">List of all Books</button>
+        <button onclick="checkAuthThen('openBookForm', 'create')">Add Book</button>
+        <button onclick="checkAuthThen('openBookForm', 'modify')">Modify Book</button>
+        <button onclick="checkAuthThen('openBookForm', 'delete')">Delete Book</button>
+    </div>   
+
+<div id="login-form" style="display: none">
+        <h3>Login</h3>
+        <form onsubmit="handleLogin(event)">
+            <input type="text" id="login-username" placeholder="Username" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <button type="button" onclick="closeForm('login-form')">Cancel</button>
+        </form>
+    </div>
+
+
+
+
 
             <div id="user-form" style="display: none"> <!-- Un <div> que contiene el formulario para operaciones de usuario (registro/login).
                                                         * id="user-form": Un identificador único para este elemento, usado por JavaScript.
                                                         * style="display: none": Inicialmente, este formulario está oculto en la página. Se mostrará con JavaScript. -->
                 <h3>User Form</h3> <!-- Encabezado dentro del formulario de usuario. -->
-                <form id="user-management-form" onsubmit="submitUserForm(event)"> <!-- Un elemento <form> para la entrada de datos del usuario.
-                                                                                    * id="user-management-form": Un identificador único para este formulario.
-                                                                                    * onsubmit="submitUserForm(event)": Cuando se envía este formulario, se llama a la función JavaScript 'submitUserForm', pasándole el evento. -->
+                <form id="user-management-form" onsubmit="submitUserForm(event)"> 
                     <input type="hidden" id="user-action" name="action" value="" /> <!-- Un campo de entrada oculto. Se usa para almacenar la acción actual (create, modify, delete) que se está realizando en el formulario de usuario. -->
                     <input type="number" id="user-id" placeholder="User ID (for modify/delete)" /> <!-- Campo para ingresar el ID del usuario. Solo es relevante para las operaciones de modificar/eliminar. Se muestra/oculta con JavaScript. -->
                     <input type="text" id="user-username" placeholder="User Name" required /> <!-- Campo para ingresar el nombre de usuario. El atributo 'required' significa que no se puede enviar el formulario si este campo está vacío. -->
@@ -61,8 +81,112 @@
             </div>
         </div>
 
-        <script> <!-- Inicia un bloque de código JavaScript incrustado directamente en el HTML. Este código se ejecutará una vez que el navegador lo procese. -->
-            // Función para abrir el formulario de usuario y configurar la acción.
+        <script> 
+        alert("Hello! The JavaScript is working!");
+let authToken = localStorage.getItem('token') || null;
+
+function showLoginForm() {
+    closeForm('user-form');
+    closeForm('book-form');
+    document.getElementById('login-form').style.display = 'block';
+}
+
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (!response.ok) throw new Error('Login failed');
+        
+        const data = await response.json();
+        authToken = data.token;
+        localStorage.setItem('token', authToken);
+        updateAuthStatus();
+        closeForm('login-form');
+        alert('Login successful!');
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed. Please try again.');
+    }
+}
+async function fetchAllBooks() {
+    try {
+        const response = await fetch('/books');
+        const books = await response.json();
+        console.log("All books:", books);
+        alert(`Found ${books.length} books! Check console for details.`);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+async function fetchAllUsers() {
+    try {
+        const response = await fetch('/users', {
+            headers: {
+                'x-auth-token': authToken
+            }
+        });
+        
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert('Please login first');
+                showLoginForm();
+                return;
+            }
+            throw new Error('Failed to fetch users');
+        }
+        
+        const users = await response.json();
+        console.log("All users:", users);
+        alert(`Found ${users.length} users! Check console for details.`);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        alert('Error fetching users. Check console for details.');
+    }
+}
+function updateAuthStatus() {
+    const authStatus = document.getElementById('auth-status');
+    if (authToken) {
+        authStatus.innerHTML = `
+            <p>Welcome! You are logged in</p>
+            <button onclick="logout()">Logout</button>
+        `;
+    } else {
+        authStatus.innerHTML = `
+            <p>You are not logged in</p>
+            <button onclick="showLoginForm()">Login</button>
+        `;
+    }
+}
+
+function logout() {
+    authToken = null;
+    localStorage.removeItem('token');
+    updateAuthStatus();
+    alert('Logged out successfully');
+}
+function checkAuthThen(callback, ...args) {
+    if (!authToken) {
+        alert('Please login first');
+        showLoginForm();
+    } else {
+        
+        window[callback](...args); 
+    }
+}
+
+updateAuthStatus(); // Inicializa el estado de autenticación al cargar la página.
             function openUserForm(action) {
                 document.getElementById("user-action").value = action; // Establece el valor del campo oculto 'user-action' a la acción pasada (ej. 'create', 'modify').
                 document.getElementById("user-form").style.display = "block"; // Hace visible el formulario de usuario.
@@ -112,6 +236,7 @@
                         method: method, // Método HTTP (POST, PUT, DELETE).
                         headers: {
                             "Content-Type": "application/json", // Indica que el cuerpo de la petición es JSON.
+                            "x-auth-token": authToken
                         },
                         body: JSON.stringify(userData), // Convierte el objeto userData a una cadena JSON y lo envía como cuerpo.
                     });
@@ -162,6 +287,7 @@
                         method: method, // Método HTTP.
                         headers: {
                             "Content-Type": "application/json", // Indica que el cuerpo es JSON.
+                            "x-auth-token": authToken 
                         },
                         body: JSON.stringify(bookData), // Convierte el objeto bookData a JSON y lo envía.
                     });
