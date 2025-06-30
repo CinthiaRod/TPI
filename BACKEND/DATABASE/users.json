@@ -16,5 +16,11 @@
     "password": "$2b$10$d03oCmwgphDqDa9IHYAGGeE1WBMk.X033ISgce7SBj98qTEXlwOIa",
     "role": "user",
     "id": 1750823923578
+  },
+  {
+    "username": "Alejandra",
+    "password": "$2b$10$DdxSj4ZE8JbZbd0xoswDDuT.o5toxoTH68qmKCbYD/aAaOsMWLvJ.",
+    "role": "user",
+    "id": 1751243245279
   }
 ]
