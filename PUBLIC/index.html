@@ -1,314 +1,84 @@
-<!DOCTYPE html> <!-- Declara el tipo de documento como HTML5. Es fundamental para que el navegador lo interprete correctamente. -->
-<html lang="en"> <!-- Define el idioma principal del contenido del documento como inglés.-->
-    <head> <!-- Contiene metadatos sobre el documento, no el contenido visible. -->
-        <meta charset="UTF-8" /> <!-- Especifica la codificación de caracteres del documento como UTF-8.-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Configura la vista para dispositivos móviles.
-                                                                                 * width=device-width: La anchura de la página se ajustará al ancho de la pantalla del dispositivo.
-                                                                                 * initial-scale=1.0: El nivel de zoom inicial cuando la página se carga por primera vez es 100%. -->
-        <title>Bookstore Management</title> <!-- Define el título que aparece en la pestaña del navegador o en la barra de título de la ventana. -->
-        <link rel="stylesheet" href="style.css" /> <!-- Enlaza el documento HTML con tu archivo de estilos CSS externo ("style.css"). Esto aplica los estilos visuales a la página. -->
-    </head>
-    <body> <!-- Contiene todo el contenido visible de tu página web, como texto, imágenes, enlaces, formularios, etc. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookstore Management</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .user-item,
+      .book-item {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .data-display {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
     <div class="container">
-    <h1>Bookshop</h1>
-    
+      <h1>Bookshop</h1>
 
-    <div id="auth-status">
-        <p>You are not logged in</p>
-        <button onclick="showLoginForm()">Login</button>
-    </div>
+      <div id="auth-status"></div>
 
-<h2>Users</h2>
-<div class="management-options">
-    <button onclick="checkAuthThen('fetchAllUsers')">List all Users</button>
-    <button onclick="checkAuthThen('openUserForm', 'create')">Register New User</button>
-    <button onclick="checkAuthThen('openUserForm', 'modify')">Modify User</button>
-    <button onclick="checkAuthThen('openUserForm', 'delete')">Delete User</button>
-</div>
+      <h2>Users</h2>
+      <div class="management-options">
+        <button onclick="checkAuthThen('fetchAllUsers')">List all Users</button>
+        <button onclick="checkAuthThen('openUserForm')">Register New User</button>
+      </div>
+      <div id="usuarios-lista" class="data-display"></div>
 
-    <h2>Book</h2>
-    <div class="management-options">
+      <h2>Books</h2>
+      <div class="management-options">
         <button onclick="fetchAllBooks()">List of all Books</button>
         <button onclick="checkAuthThen('openBookForm', 'create')">Add Book</button>
         <button onclick="checkAuthThen('openBookForm', 'modify')">Modify Book</button>
         <button onclick="checkAuthThen('openBookForm', 'delete')">Delete Book</button>
-    </div>   
+      </div>
+      <div id="libros-lista" class="data-display"></div>
 
-<div id="login-form" style="display: none">
+      <div id="login-form" style="display: none">
         <h3>Login</h3>
         <form onsubmit="handleLogin(event)">
-            <input type="text" id="login-username" placeholder="Username" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button type="submit">Login</button>
-            <button type="button" onclick="closeForm('login-form')">Cancel</button>
+          <input type="text" id="login-username" placeholder="Username" required />
+          <input type="password" id="login-password" placeholder="Password" required />
+          <button type="submit">Login</button>
+          <button type="button" onclick="closeForm('login-form')">Cancel</button>
         </form>
+      </div>
+
+      <div id="user-form" style="display: none">
+        <h3>User Form</h3>
+        <form onsubmit="submitUserForm(event)">
+          <input type="text" id="user-username" placeholder="User Name" required />
+          <input type="password" id="user-password" placeholder="User Password" required />
+          <select id="user-role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit">Submit</button>
+          <button type="button" onclick="closeForm('user-form')">Cancel</button>
+        </form>
+      </div>
+
+      <div id="book-form" style="display: none">
+        <h3>Book Form</h3>
+        <form onsubmit="submitBookForm(event)">
+          <input type="hidden" id="book-action" />
+          <input type="number" id="book-id" placeholder="Book ID (for modify/delete)" />
+          <input type="text" id="book-title" placeholder="Book Title" required />
+          <input type="text" id="book-author" placeholder="Book Author" required />
+          <input type="number" id="book-year" placeholder="Book Year" required />
+          <input type="number" id="book-stock" placeholder="Book Stock" required />
+          <button type="submit">Submit</button>
+          <button type="button" onclick="closeForm('book-form')">Cancel</button>
+        </form>
+      </div>
     </div>
 
-
-
-
-
-            <div id="user-form" style="display: none"> <!-- Un <div> que contiene el formulario para operaciones de usuario (registro/login).
-                                                        * id="user-form": Un identificador único para este elemento, usado por JavaScript.
-                                                        * style="display: none": Inicialmente, este formulario está oculto en la página. Se mostrará con JavaScript. -->
-                <h3>User Form</h3> <!-- Encabezado dentro del formulario de usuario. -->
-                <form id="user-management-form" onsubmit="submitUserForm(event)"> 
-                    <input type="hidden" id="user-action" name="action" value="" /> <!-- Un campo de entrada oculto. Se usa para almacenar la acción actual (create, modify, delete) que se está realizando en el formulario de usuario. -->
-                    <input type="number" id="user-id" placeholder="User ID (for modify/delete)" /> <!-- Campo para ingresar el ID del usuario. Solo es relevante para las operaciones de modificar/eliminar. Se muestra/oculta con JavaScript. -->
-                    <input type="text" id="user-username" placeholder="User Name" required /> <!-- Campo para ingresar el nombre de usuario. El atributo 'required' significa que no se puede enviar el formulario si este campo está vacío. -->
-                    <input type="password" id="user-password" placeholder="User Password" required /> <!-- Campo para ingresar la contraseña. El atributo 'required' lo hace obligatorio. -->
-                    <select id="user-role"> <!-- Un menú desplegable para seleccionar el rol del usuario (User o Admin). -->
-                        <option value="user">User</option> <!-- Opción con valor "user". -->
-                        <option value="admin">Admin</option> <!-- Opción con valor "admin". -->
-                    </select>
-                    <button type="submit">Submit</button> <!-- Botón para enviar el formulario. Al hacer clic, activará la función 'submitUserForm'. -->
-                    <button type="button" onclick="closeForm('user-form')">Cancel</button> <!-- Botón para cancelar y cerrar el formulario. Llama a la función JavaScript 'closeForm'. -->
-                </form>
-            </div>
-
-            <div id="book-form" style="display: none"> <!-- Un <div> que contiene el formulario para operaciones de libros, similar al formulario de usuario. Inicialmente oculto. -->
-                <h3>Book Form</h3> <!-- Encabezado dentro del formulario de libro. -->
-                <form id="book-management-form" onsubmit="submitBookForm(event)"> <!-- Formulario para la gestión de libros. Cuando se envía, llama a 'submitBookForm'. -->
-                    <input type="hidden" id="book-action" name="action" value="" /> <!-- Campo oculto para la acción actual del libro (create, modify, delete). -->
-                    <input type="number" id="book-id" placeholder="Book ID (for modify/delete)" /> <!-- Campo para el ID del libro, relevante para modificar/eliminar. -->
-                    <input type="text" id="book-title" placeholder="Book Title" required /> <!-- Campo para el título del libro, obligatorio. -->
-                    <input type="text" id="book-author" placeholder="Book Author" required /> <!-- Campo para el autor del libro, obligatorio. -->
-                    <input type="number" id="book-year" placeholder="Book Year" required /> <!-- Campo para el año del libro, obligatorio. -->
-                    <input type="number" id="book-stock" placeholder="Book Stock" required /> <!-- Campo para el stock del libro, obligatorio. -->
-                    <button type="submit">Submit</button> <!-- Botón para enviar el formulario del libro. -->
-                    <button type="button" onclick="closeForm('book-form')">Cancel</button> <!-- Botón para cancelar y cerrar el formulario del libro. -->
-                </form>
-            </div>
-        </div>
-
-        <script> 
-        alert("Hello! The JavaScript is working!");
-const API_BASE_URL = 'http://localhost:3001'; 
-let authToken = localStorage.getItem('token') || null;
-
-function showLoginForm() {
-    closeForm('user-form');
-    closeForm('book-form');
-    document.getElementById('login-form').style.display = 'block';
-}
-
-
-async function handleLogin(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/users/login`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authToken}`
-        },
-            body: JSON.stringify({ username, password })
-        });
-
-        if (!response.ok) throw new Error('Login failed');
-        
-        const data = await response.json();
-        authToken = data.token;
-        localStorage.setItem('token', authToken);
-        updateAuthStatus();
-        closeForm('login-form');
-        alert('Login successful!');
-    } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed. Please try again.');
-    }
-}
-async function fetchAllBooks() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/books`);
-        const books = await response.json();
-        console.log("All books:", books);
-        alert(`Found ${books.length} books! Check console for details.`);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-async function fetchAllUsers() {
-    try {
-        const headers = {
-                'authorization': `Bearer ${authToken}`
-        }
-        
-        const response = await fetch(`${API_BASE_URL}/users`, { headers });
-        if (!response.ok) {
-            if (response.status === 401) {
-                alert('Please login first');
-                showLoginForm();
-                return;
-            }
-            throw new Error('Failed to fetch users');
-        }
-        
-        const users = await response.json();
-        console.log("All users:", users);
-        alert(`Found ${users.length} users! Check console for details.`);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        alert('Error fetching users. Check console for details.');
-    }
-}
-function updateAuthStatus() {
-    const authStatus = document.getElementById('auth-status');
-    if (authToken) {
-        authStatus.innerHTML = `
-            <p>Welcome! You are logged in</p>
-            <button onclick="logout()">Logout</button>
-        `;
-    } else {
-        authStatus.innerHTML = `
-            <p>You are not logged in</p>
-            <button onclick="showLoginForm()">Login</button>
-        `;
-    }
-}
-
-function logout() {
-    authToken = null;
-    localStorage.removeItem('token');
-    updateAuthStatus();
-    alert('Logged out successfully');
-}
-function checkAuthThen(callback, ...args) {
-    if (!authToken) {
-        alert('Please login first');
-        showLoginForm();
-    } else {
-        
-        window[callback](...args); 
-    }
-}
-
-updateAuthStatus(); // Inicializa el estado de autenticación al cargar la página.
-            function openUserForm(action) {
-                document.getElementById("user-action").value = action; // Establece el valor del campo oculto 'user-action' a la acción pasada (ej. 'create', 'modify').
-                document.getElementById("user-form").style.display = "block"; // Hace visible el formulario de usuario.
-                document.getElementById("user-id").style.display = // Controla la visibilidad del campo "User ID".
-                    action !== "create" ? "block" : "none"; // Si la acción NO es 'create', muestra el campo de ID; de lo contrario, lo oculta.
-            }
-
-            // Función para abrir el formulario de libro y configurar la acción. Funciona de manera similar a openUserForm.
-            function openBookForm(action) {
-                document.getElementById("book-action").value = action; // Establece la acción del libro.
-                document.getElementById("book-form").style.display = "block"; // Muestra el formulario de libro.
-                document.getElementById("book-id").style.display = // Controla la visibilidad del campo "Book ID".
-                    action !== "create" ? "block" : "none"; // Si la acción NO es 'create', muestra el campo de ID; de lo contrario, lo oculta.
-            }
-
-            // Función genérica para cerrar cualquier formulario.
-            function closeForm(formId) {
-                document.getElementById(formId).style.display = "none"; // Oculta el formulario especificado por su ID.
-            }
-
-            // Función asíncrona para manejar el envío del formulario de usuario.
-            async function submitUserForm(event) {
-    event.preventDefault();
-
-    const action = document.getElementById("user-action").value;
-    const id = document.getElementById("user-id").value;
-    const username = document.getElementById("user-username").value;
-    const password = document.getElementById("user-password").value;
-    const role = document.getElementById("user-role").value;
-
-    const userData = {
-        username: username,
-        password: password,
-        role: role,
-    };
-
-    let url = `${API_BASE_URL}/users/register`; // URL base de la API
-    let method = "POST";
-
-    if (action !== "create") {
-        url = `${API_BASE_URL}/users/${id}`;
-        method = action === "modify" ? "PUT" : "DELETE";
-    }
-
-    try {
-        const response = await fetch(url, {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authToken}`
-            },
-            body: action === "delete" ? null : JSON.stringify(userData),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log("Success:", result);
-        alert(action === "create" ? "User created successfully!" : 
-        action === "modify" ? "User updated successfully!" : "User deleted successfully!");
-        closeForm("user-form");
-    } catch (error) {
-        console.error("Error:", error);
-        alert(`Error: ${error.message}`);
-    }
-}
-
-            // Función asíncrona para manejar el envío del formulario de libros. Funciona de manera similar a submitUserForm.
-            async function submitBookForm(event) {
-                event.preventDefault(); // Previene la recarga de la página.
-
-                const action = document.getElementById("book-action").value; // Obtiene la acción del libro.
-                const id = document.getElementById("book-id").value; // Obtiene el ID del libro.
-                const title = document.getElementById("book-title").value; // Obtiene el título.
-                const author = document.getElementById("book-author").value; // Obtiene el autor.
-                const year = document.getElementById("book-year").value; // Obtiene el año.
-                const stock = document.getElementById("book-stock").value; // Obtiene el stock.
-
-                const bookData = { // Crea un objeto con los datos del libro a enviar.
-                    title: title,
-                    author: author,
-                    year: year,
-                    stock: stock
-                };
-
-                let url = "/books"; // URL base para operaciones de libros.
-                let method = "POST"; // Método HTTP predeterminado para 'create'.
-
-                if (action !== "create") { // Si la acción no es 'create'.
-                    url = `/books/${id}`; // La URL incluye el ID del libro.
-                    method = action === "modify" ? "PUT" : "DELETE"; // El método será PUT para modificar, DELETE para eliminar.
-                }
-
-                try { // Inicia un bloque try-catch.
-                    const response = await fetch(url, { // Realiza una petición fetch a la API.
-                        method: method, // Método HTTP.
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${authToken}`
-            },
-                        body: JSON.stringify(bookData), // Convierte el objeto bookData a JSON y lo envía.
-                    });
-
-                    if (!response.ok) { // Si la respuesta no es exitosa.
-                        throw new Error(
-                            `HTTP error! Status: ${response.status}`
-                        );
-                    }
-
-                    const result = await response.json(); // Parsea la respuesta JSON.
-                    console.log("Success:", result); // Muestra el resultado.
-                    closeForm("book-form"); // Cierra el formulario del libro.
-                    // Opcionalmente, aquí se podría llamar a una función para refrescar la lista de libros.
-                } catch (error) { // Captura errores.
-                    console.error("Error:", error); // Muestra el error.
-                }
-            }
-        </script>
-    </body>
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -22,5 +22,17 @@
     "password": "$2b$10$DdxSj4ZE8JbZbd0xoswDDuT.o5toxoTH68qmKCbYD/aAaOsMWLvJ.",
     "role": "user",
     "id": 1751243245279
+  },
+  {
+    "username": "Shakti",
+    "password": "$2b$10$uTxzPB.GaLn07VqYgdXlVewYRmVX8B1XzsIrFSumSlS.iz2K16gwi",
+    "role": "user",
+    "id": 1751258670955
+  },
+  {
+    "username": "Neji",
+    "password": "$2b$10$7pvCw9.SdJdQIs6VHpMi1.SXx2iUVct7Zh2cjLUNEDjN9WMiwGIIO",
+    "role": "user",
+    "id": 1751259380223
   }
 ]
